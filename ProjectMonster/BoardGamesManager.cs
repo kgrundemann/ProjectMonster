@@ -1,5 +1,4 @@
 ﻿using static System.Console;
-using System.Data.SqlClient;
 
 
 namespace ProjectMonster;
@@ -12,9 +11,6 @@ public class BoardGamesManager
     {
         _boardGames = new List<BoardGame>()
         {
-            new BoardGame("Everdell", 1, 6, 120),
-            new BoardGame("Clank", 2, 6, 100),
-            new BoardGame("Robinson Crusoe", 1, 4, 120)
         };
     }
     // Display
@@ -29,7 +25,7 @@ public class BoardGamesManager
     public void AddGameToList()
     {
         Write("Enter the name of the game: ");
-        const string? name = (string?)null;
+        var name = ReadLine();
 
         Write("Enter the minimum number of players: ");
         var minPlayers = Convert.ToInt32(ReadLine());
@@ -38,9 +34,9 @@ public class BoardGamesManager
         var maxPlayers = Convert.ToInt32(ReadLine());
 
         Write("Enter the play time (in minutes): ");
-        var playTime = Convert.ToInt32(ReadLine());
+        var durationInMinutes = Convert.ToInt32(ReadLine());
 
-        _boardGames.Add(new BoardGame(name, minPlayers, maxPlayers, playTime));
+        _boardGames.Add(new BoardGame(name, minPlayers, maxPlayers, durationInMinutes));
 
         WriteLine("The board game has been added to the list.");
     }
@@ -80,8 +76,8 @@ public class BoardGamesManager
             var newPlayTime = ReadLine();
             if (!string.IsNullOrEmpty(newPlayTime))
             {
-                var playTime = Convert.ToInt32(newPlayTime);
-                gameToUpdate.DurationInMinutes = playTime;
+                var durationInMinutes = Convert.ToInt32(newPlayTime);
+                gameToUpdate.DurationInMinutes = durationInMinutes;
             }
 
             WriteLine("The board game has been updated.");
@@ -117,24 +113,42 @@ public class BoardGamesManager
 
         if (string.IsNullOrWhiteSpace(name)) 
         {
-            WriteLine("Please enter a valid game name.");
+            WriteLine("Please enter a game name.");
             return;
         }
 
-        var matchingGames = _boardGames.FindAll(game =>
+        var matchingGame = _boardGames.Find(game =>
             !string.IsNullOrWhiteSpace(game.Name) && 
             game.Name.ToLower().Contains(name)
         );
 
-        if (matchingGames.Count > 0)
+        WriteLine(matchingGame != null ? $"Matching game: {matchingGame}" : "No matching game found.");
+    }
+
+    private const string FilePath = @"C:\Users\Krzysiek\source\repos\ProjectMonster\BoardGames.txt";
+
+    public void SaveGameListToFile()
+    {
+        try
         {
-            WriteLine("Matching games:");
-            foreach (var game in matchingGames)
-                WriteLine(game.ToString());
+            using (var gameList = new StreamWriter(FilePath))
+            {
+                foreach (var game in _boardGames)
+                {
+                    gameList.WriteLine(game.ToString());
+                }
+            }
+
+            WriteLine($"Game list has been saved to file: {FilePath}");
         }
-        else
+        catch (IOException ex)
         {
-            WriteLine("No matching games found.");
+            WriteLine($"Error occurred while saving the game list to file: {ex.Message}");
         }
     }
+
+    public void LoadGameListFromFile()
+    {
+    }
 }
+
