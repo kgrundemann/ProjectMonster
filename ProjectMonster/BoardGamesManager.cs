@@ -9,9 +9,7 @@ public class BoardGamesManager
 
     public BoardGamesManager()
     {
-        _boardGames = new List<BoardGame>()
-        {
-        };
+        _boardGames = new List<BoardGame>();
     }
     // Display
     public void DisplayGameList()
@@ -125,7 +123,7 @@ public class BoardGamesManager
         WriteLine(matchingGame != null ? $"Matching game: {matchingGame}" : "No matching game found.");
     }
 
-    private const string FilePath = @"C:\Users\Krzysiek\source\repos\ProjectMonster\BoardGames.txt";
+    private const string FilePath = @"C:\Users\Krzysiek\source\repos\ProjectMonster\BoardGames.csv";
 
     public void SaveGameListToFile()
     {
@@ -135,7 +133,7 @@ public class BoardGamesManager
             {
                 foreach (var game in _boardGames)
                 {
-                    gameList.WriteLine(game.ToString());
+                    gameList.WriteLine($"{game.Name},{game.MinNumPlayers},{game.MaxNumPlayers},{game.DurationInMinutes}");
                 }
             }
 
@@ -149,6 +147,30 @@ public class BoardGamesManager
 
     public void LoadGameListFromFile()
     {
+        try
+        {
+            using (var gameList = new StreamReader(FilePath))
+            {
+                var newGameList = new List<BoardGame>();
+                while (gameList.ReadLine() is { } line)
+                {
+                    var fields = line.Split(',');
+                    var name = fields[0];
+                    var minPlayers = int.Parse(fields[1]);
+                    var maxPlayers = int.Parse(fields[2]);
+                    var durationInMinutes = int.Parse(fields[3]);
+                    newGameList.Add(new BoardGame(name, minPlayers, maxPlayers, durationInMinutes));
+                }
+                _boardGames.Clear();
+                _boardGames.AddRange(newGameList);
+            }
+
+            WriteLine($"Game list has been loaded from file: {FilePath}");
+        }
+        catch (IOException ex)
+        {
+            WriteLine($"Error occurred while loading the game list from file: {ex.Message}");
+        }
     }
 }
 
