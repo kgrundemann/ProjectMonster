@@ -25,14 +25,41 @@ public class BoardGamesManager
         Write("Enter the name of the game: ");
         var name = ReadLine();
 
+        
         Write("Enter the minimum number of players: ");
-        var minPlayers = Convert.ToInt32(ReadLine());
-
+        int minPlayers;
+        try
+        {
+             minPlayers = Convert.ToInt32(ReadLine());
+        }
+        catch (FormatException)
+        {
+            WriteLine("Invalid input: please enter an integer.");
+            return;
+        }
         Write("Enter the maximum number of players: ");
-        var maxPlayers = Convert.ToInt32(ReadLine());
+        int maxPlayers;
+        try
+        {
+            maxPlayers = Convert.ToInt32(ReadLine());
+        }
+        catch (FormatException)
+        {
+            WriteLine("Invalid input: please enter an integer.");
+            return;
+        }
 
         Write("Enter the play time (in minutes): ");
-        var durationInMinutes = Convert.ToInt32(ReadLine());
+        int durationInMinutes;
+        try
+        {
+             durationInMinutes = Convert.ToInt32(ReadLine());
+        }
+        catch (FormatException)
+        {
+            WriteLine("Invalid input: please enter an integer.");
+            return;
+        }
 
         _boardGames.Add(new BoardGame(name, minPlayers, maxPlayers, durationInMinutes));
 
@@ -56,26 +83,39 @@ public class BoardGamesManager
             }
 
             Write("Enter the new minimum number of players: ");
-            var newMinPlayers = ReadLine();
-            if (!string.IsNullOrEmpty(newMinPlayers))
+            try
             {
-                var minPlayers = Convert.ToInt32(newMinPlayers);
-                gameToUpdate.MinNumPlayers = minPlayers;
+                var newMinPlayers = Convert.ToInt32(ReadLine());
+                gameToUpdate.MinNumPlayers = newMinPlayers;
+            }
+            catch (FormatException)
+            {
+                WriteLine("Invalid input: please enter an integer.");
+                return;
             }
 
             Write("Enter the new maximum number of players: ");
-            var newMaxPlayers = ReadLine();
-            if (!string.IsNullOrEmpty(newMaxPlayers))
+            try
             {
-                var maxPlayers = Convert.ToInt32(newMaxPlayers);
-                gameToUpdate.MaxNumPlayers = maxPlayers;
+                var newMaxPlayers = Convert.ToInt32(ReadLine());
+                gameToUpdate.MaxNumPlayers = newMaxPlayers;
             }
-            Write("Enter the new play time (in minutes): ");
-            var newPlayTime = ReadLine();
-            if (!string.IsNullOrEmpty(newPlayTime))
+            catch (FormatException)
             {
-                var durationInMinutes = Convert.ToInt32(newPlayTime);
-                gameToUpdate.DurationInMinutes = durationInMinutes;
+                WriteLine("Invalid input: please enter an integer.");
+                return;
+            }
+
+            Write("Enter the new play time (in minutes): ");
+            try
+            {
+                var newDurationInMinutes = Convert.ToInt32(ReadLine());
+                gameToUpdate.DurationInMinutes = newDurationInMinutes;
+            }
+            catch (FormatException)
+            {
+                WriteLine("Invalid input: please enter an integer.");
+                return;
             }
 
             WriteLine("The board game has been updated.");
