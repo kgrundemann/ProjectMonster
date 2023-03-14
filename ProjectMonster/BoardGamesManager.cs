@@ -23,39 +23,28 @@ public class BoardGamesManager
     public void AddGameToList()
     {
         Write("Enter the name of the game: ");
-        var name = ReadLine();
 
+        var name = ReadLine();
         
         Write("Enter the minimum number of players: ");
-        int minPlayers;
-        try
-        {
-             minPlayers = Convert.ToInt32(ReadLine());
-        }
-        catch (FormatException)
+
+        if (!int.TryParse(ReadLine(), out int minPlayers))
         {
             WriteLine("Invalid input: please enter an integer.");
             return;
         }
+
         Write("Enter the maximum number of players: ");
-        int maxPlayers;
-        try
-        {
-            maxPlayers = Convert.ToInt32(ReadLine());
-        }
-        catch (FormatException)
+
+        if (!int.TryParse(ReadLine(), out int maxPlayers))
         {
             WriteLine("Invalid input: please enter an integer.");
             return;
         }
 
         Write("Enter the play time (in minutes): ");
-        int durationInMinutes;
-        try
-        {
-             durationInMinutes = Convert.ToInt32(ReadLine());
-        }
-        catch (FormatException)
+
+         if (!int.TryParse(ReadLine(), out int durationInMinutes))
         {
             WriteLine("Invalid input: please enter an integer.");
             return;
@@ -83,36 +72,33 @@ public class BoardGamesManager
             }
 
             Write("Enter the new minimum number of players: ");
-            try
+            if (int.TryParse(ReadLine(), out int newMinPlayers))
             {
-                var newMinPlayers = Convert.ToInt32(ReadLine());
                 gameToUpdate.MinNumPlayers = newMinPlayers;
             }
-            catch (FormatException)
+            else
             {
                 WriteLine("Invalid input: please enter an integer.");
                 return;
             }
 
             Write("Enter the new maximum number of players: ");
-            try
+            if (int.TryParse(ReadLine(), out int newMaxPlayers))
             {
-                var newMaxPlayers = Convert.ToInt32(ReadLine());
                 gameToUpdate.MaxNumPlayers = newMaxPlayers;
             }
-            catch (FormatException)
+            else
             {
                 WriteLine("Invalid input: please enter an integer.");
                 return;
             }
 
             Write("Enter the new play time (in minutes): ");
-            try
+             if (int.TryParse(ReadLine(), out int newDurationInMinutes))
             {
-                var newDurationInMinutes = Convert.ToInt32(ReadLine());
                 gameToUpdate.DurationInMinutes = newDurationInMinutes;
             }
-            catch (FormatException)
+            else
             {
                 WriteLine("Invalid input: please enter an integer.");
                 return;

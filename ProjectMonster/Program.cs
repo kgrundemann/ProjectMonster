@@ -14,11 +14,10 @@ while (true)
     WriteLine("6. Save game list to file");
     WriteLine("7. Load game list to file");
     WriteLine("0. Exit the program");
-    try
-    {
+ 
         Write("Choose an option: ");
-        var option = Convert.ToInt32(ReadLine());
-
+        if (int.TryParse(ReadLine(), out int option))
+        {
         switch (option)
         {
             case 1:
@@ -38,7 +37,6 @@ while (true)
                 break;
 
             case 5:
-
                 boardGameManager.SearchGameByName();
                 break;
 
@@ -59,8 +57,10 @@ while (true)
                 break;
         }
     }
-    catch (FormatException)
+
+    else
     {
         WriteLine("Invalid input: please enter an integer.");
     }
+
 }
